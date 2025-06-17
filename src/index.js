@@ -2,9 +2,9 @@ import './pages/index.css';
 
 import {initialCards} from './components/cards.js';
 
-import {deleteCard, createCard} from './components/card.js';
+import {deleteCard, clickLike, createCard} from './components/card.js';
 
-import {openPopup, closePopup, handleBasicClose, handleEscClose} from './components/modal.js';
+import {openPopup, closePopup} from './components/modal.js';
 
 const placesList = document.querySelector(".places__list");
 
@@ -31,12 +31,7 @@ const inputCard = formNewPlace.querySelector('.popup__input_type_card-name');
 const inputUrl = formNewPlace.querySelector('.popup__input_type_url');
 
 initialCards.forEach(card => {
-  placesList.append(createCard(card, deleteCard, handleImageClick));
-});
-
-modals.forEach(modal => {
-  handleBasicClose(modal);
-  handleEscClose(modal);
+  placesList.append(createCard(card, deleteCard, handleImageClick, clickLike));
 });
 
 editButton.addEventListener('click', () => {  
@@ -66,7 +61,7 @@ function handleCardAdd(evt) {
     link: inputUrl.value
   };
   
-  const createNewCard = createCard(newCard, deleteCard, handleImageClick);
+  const createNewCard = createCard(newCard, deleteCard, handleImageClick, clickLike);
   
   placesList.prepend(createNewCard);
 

@@ -6,7 +6,7 @@ function clickLike(like) {
   like.classList.toggle("card__like-button_is-active");
 }
 
-function createCard(card, deleteCard, handleImageClick) {
+function createCard(card, deleteCard, handleImageClick, clickLike) {
   const cardTemplate = document.querySelector("#card-template").content;
   const cardElement = cardTemplate.querySelector(".card").cloneNode(true);
 
@@ -29,4 +29,4 @@ function createCard(card, deleteCard, handleImageClick) {
   return cardElement;
 }
 
-export {deleteCard, createCard};
+export {deleteCard, clickLike, createCard};
