@@ -4,7 +4,7 @@ import {initialCards} from './components/cards.js';
 
 import {deleteCard, createCard} from './components/card.js';
 
-import {openPopup, closePopup} from './components/modal.js';
+import {openPopup, closePopup, handleBasicClose, handleEscClose} from './components/modal.js';
 
 const placesList = document.querySelector(".places__list");
 
@@ -34,19 +34,10 @@ initialCards.forEach(card => {
   placesList.append(createCard(card, deleteCard, handleImageClick));
 });
 
-modals.forEach((modal) => {
-  modal.addEventListener('click', (evt) => {
-    if (evt.target.classList.contains('popup__close')|| evt.target.classList.contains('popup')) {
-      closePopup(modal);
-    }
-  });
-
-  document.addEventListener('keydown', (evt) => {
-    if (evt.key === 'Escape') {
-      closePopup(modal);
-    }
-  });
-})
+modals.forEach(modal => {
+  handleBasicClose(modal);
+  handleEscClose(modal);
+});
 
 editButton.addEventListener('click', () => {  
   nameInput.value = profileTitle.textContent;
@@ -56,7 +47,7 @@ editButton.addEventListener('click', () => {
 
 addButton.addEventListener('click', () => openPopup(addPopup));
 
-function handleFormSubmit(evt) {
+function handleProfileEdit(evt) {
   evt.preventDefault();
 
   profileTitle.textContent = nameInput.value;
@@ -65,7 +56,7 @@ function handleFormSubmit(evt) {
   closePopup(editPopup);
 }
 
-formProfile.addEventListener('submit', handleFormSubmit);
+formProfile.addEventListener('submit', handleProfileEdit);
 
 function handleCardAdd(evt) {
   evt.preventDefault();
