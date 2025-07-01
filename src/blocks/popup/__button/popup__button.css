@@ -14,6 +14,10 @@
   margin-top: 48px;
 }
 
+.popup__button_del {
+  margin-top: 38px;
+}
+
 .popup__button:hover {
   background: rgba(0, 0, 0, 0.8);
   cursor: pointer;
@@ -24,4 +28,16 @@
     font-size: 14px;
     line-height: 17px;
   }
+}
+
+.popup__button_inactive {
+  background-color: transparent;
+  color: rgba(0, 0, 0, 0.15);
+  border: 1px solid rgba(0, 0, 0, 0.15);
+}
+
+.popup__button_inactive:hover {
+  background-color: transparent;
+  color: rgba(0, 0, 0, 0.15);
+  border: 1px solid rgba(0, 0, 0, 0.15);
 }
