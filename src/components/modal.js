@@ -11,18 +11,18 @@ function closePopup(popup) {
 }
 
 function handleBasicClose(evt) { 
-  const popupOpen = document.querySelector(".popup_is-opened"); 
-  if ( 
+  if (     
     evt.target.classList.contains("popup__close") ||
     evt.target.classList.contains("popup") 
   ) { 
+    const popupOpen = document.querySelector(".popup_is-opened"); 
     closePopup(popupOpen); 
   } 
 }
 
 function handleEscClose(evt) {
-  const popupOpen = document.querySelector(".popup_is-opened"); 
   if (evt.key === "Escape") { 
+    const popupOpen = document.querySelector(".popup_is-opened"); 
     closePopup(popupOpen); 
   } 
 }
