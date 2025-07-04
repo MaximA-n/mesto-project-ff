@@ -8,11 +8,7 @@ const enableSubmitButton = (buttonElement, config) => {
   buttonElement.classList.remove(config.inactiveButtonClass);
 };
 
-const configValidation = {
-  inactiveButtonClass: 'popup__button_inactive'
-};
-
-function toggleButtonState(inputList, buttonElement, config = configValidation) {
+function toggleButtonState(inputList, buttonElement, config) {
   if (hasInvalidInput(inputList)) {
     disableSubmitButton(buttonElement, config);
   } else {
@@ -20,21 +16,21 @@ function toggleButtonState(inputList, buttonElement, config = configValidation) 
   }
 }
 
-const showInputError = (formElement, inputElement, errorMessage) => {
+const showInputError = (formElement, inputElement, errorMessage, config) => {
   const errorElement = formElement.querySelector(`.${inputElement.id}-error`);
-  inputElement.classList.add('popup__input_type_error');
+  inputElement.classList.add(config.inputErrorClass);
   errorElement.textContent = errorMessage;
-  errorElement.classList.add('popup__input-error_active');
+  errorElement.classList.add(config.errorClass);
 };
 
-const hideInputError = (formElement, inputElement) => {
+const hideInputError = (formElement, inputElement, config) => {
   const errorElement = formElement.querySelector(`.${inputElement.id}-error`);
-  inputElement.classList.remove('popup__input_type_error');
-  errorElement.classList.remove('popup__input-error_active');
+  inputElement.classList.remove(config.inputErrorClass);
+  errorElement.classList.remove(config.errorClass);
   errorElement.textContent = '';
 };
 
-const checkInputValidity = (formElement, inputElement) => {
+const checkInputValidity = (formElement, inputElement, config) => {
   if (inputElement.validity.patternMismatch) {
     inputElement.setCustomValidity(inputElement.dataset.errorMessage);
   } else {
@@ -42,28 +38,28 @@ const checkInputValidity = (formElement, inputElement) => {
   }
 
   if (!inputElement.validity.valid) {
-    showInputError(formElement, inputElement, inputElement.validationMessage);
+    showInputError(formElement, inputElement, inputElement.validationMessage, config);
   } else {
-    hideInputError(formElement, inputElement);
+    hideInputError(formElement, inputElement, config);
   }
-}; 
+};
 
-const setEventListeners = (formElement, config = configValidation) => {
-  const inputList = Array.from(formElement.querySelectorAll('.popup__input'));
-  const buttonElement = formElement.querySelector('.popup__button');
+const setEventListeners = (formElement, config) => {
+  const inputList = Array.from(formElement.querySelectorAll(config.inputSelector));
+  const buttonElement = formElement.querySelector(config.submitButtonSelector);
 
   toggleButtonState(inputList, buttonElement, config);
 
   inputList.forEach((inputElement) => {
     inputElement.addEventListener('input', function () {
-      checkInputValidity(formElement, inputElement);
+      checkInputValidity(formElement, inputElement, config);
       toggleButtonState(inputList, buttonElement, config);
     });
   });
 };
 
 
-const enableValidation = (config = configValidation) => {
+const enableValidation = (config) => {
   const formList = Array.from(document.querySelectorAll('.popup__form'));
   
   formList.forEach((formElement) => {
@@ -71,19 +67,23 @@ const enableValidation = (config = configValidation) => {
   });
 }
 
-enableValidation();
-
 function hasInvalidInput(inputList) {
   return inputList.some((inputElement) => !inputElement.validity.valid);
 }
 
-function clearValidation(formElement) {
-  const inputList = Array.from(formElement.querySelectorAll('.popup__input'));
+function clearValidation(formElement, config) {
+  const inputList = Array.from(formElement.querySelectorAll(config.inputSelector));
+  const buttonElement = formElement.querySelector(config.submitButtonSelector);
 
   inputList.forEach((inputElement) => {
-    hideInputError(formElement, inputElement);
+    hideInputError(formElement, inputElement, config);
     inputElement.setCustomValidity("");
-  })
+  });
+
+  disableSubmitButton(buttonElement, config);
 }
 
-export {showInputError, clearValidation};
+export {
+  clearValidation,
+  enableValidation
+};

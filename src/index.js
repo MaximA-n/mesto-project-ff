@@ -6,7 +6,15 @@ import {openPopup, closePopup} from './components/modal.js';
 
 import {getUserInfo, getInitialCards, editUserInfo, addNewCard, apiDeleteCard, likeCard, unlikeCard, updateAvatar} from './components/api.js';
 
-import {showInputError, clearValidation} from './components/validation.js';
+import {clearValidation, enableValidation} from './components/validation.js';
+
+const configValidation = {
+  inputSelector: '.popup__input',
+  submitButtonSelector: '.popup__button',
+  inactiveButtonClass: 'popup__button_inactive',
+  inputErrorClass: 'popup__input_type_error',
+  errorClass: 'popup__input-error_active'
+};
 
 const placesList = document.querySelector(".places__list");
 
@@ -37,6 +45,8 @@ const inputUrl = formNewPlace.querySelector('.popup__input_type_url');
 const avatarPopup = document.querySelector('.popup_type_avatar');
 const avatarForm = avatarPopup.querySelector('form[name="edit-avatar"]');
 const avatarInput = avatarPopup.querySelector('.popup__input_type_avatar');
+
+enableValidation(configValidation);
 
 function renderLoading(isLoading, button, defaultText = 'Сохранить') {
   if (isLoading) {
@@ -72,13 +82,13 @@ deleteForm.addEventListener('submit', (evt) => {
 editButton.addEventListener('click', () => {  
   nameInput.value = profileTitle.textContent;
   jobInput.value = profileDescription.textContent;
-  clearValidation(formProfile);
+  clearValidation(formProfile, configValidation);
   openPopup(editPopup);
 });
 
 addButton.addEventListener('click', () => {
   formNewPlace.reset();
-  clearValidation(formNewPlace);  
+  clearValidation(formNewPlace, configValidation);  
   openPopup(addPopup);
 });
 
@@ -145,7 +155,6 @@ function handleCardAdd(evt) {
       placesList.prepend(createCard(card, userId, handleDeleteClick, handleImageClick, handleLikeClick));
       closePopup(addPopup);
       formNewPlace.reset();
-      clearValidation(formNewPlace);
     })
     .catch((err) => {
       console.log('Ошибка. Запрос не выполнен: ', err);
@@ -176,7 +185,7 @@ function handleLikeClick(card, likeButton, likeCount) {
 
 profileImage.addEventListener('click', () => {
   avatarForm.reset();
-  clearValidation(avatarForm);
+  clearValidation(avatarForm, configValidation);
   openPopup(avatarPopup);
 });
 
