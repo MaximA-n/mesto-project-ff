@@ -9,6 +9,7 @@ import {getUserInfo, getInitialCards, editUserInfo, addNewCard, apiDeleteCard, l
 import {clearValidation, enableValidation} from './components/validation.js';
 
 const configValidation = {
+  formSelector: ".popup__form",
   inputSelector: '.popup__input',
   submitButtonSelector: '.popup__button',
   inactiveButtonClass: 'popup__button_inactive',
